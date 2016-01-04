@@ -26,20 +26,27 @@ var getCleanHost = function(str) {
     return hostsArr.join('\n');
 }
 
+var update = function(){
+    request('https://raw.githubusercontent.com/racaljk/hosts/master/hosts', function(error, res, body) {
+        if (error) {
+            console.log(error);
+        }
+        if (res.statusCode == 200) {
+            hosts.removeGroup('vpn');
+            hosts.addGroup('vpn', '获取最新https://github.com/racaljk/hosts并应用hosts');
+            var hostsArr = getCleanHost(body);
+            fs.appendFile(HOSTS, hostsArr, function(err, data) {
+                if (err) {
+                    console.log(err);
+                }
+                console.log('更新成功！');
+            });
+        }
+    })
+}
 
-request('https://raw.githubusercontent.com/racaljk/hosts/master/hosts', function(error, res, body) {
-    if(error){
-        console.log(error);
-    }
-    if(res.statusCode == 200){
-        hosts.removeGroup('vpn');
-        hosts.addGroup('vpn', '获取最新https://github.com/racaljk/hosts并应用hosts');
-        var hostsArr = getCleanHost(body);
-        fs.appendFile(HOSTS, hostsArr,function(err,data){
-            if(err){
-                console.log(err);
-            }
-            console.log('更新成功！');
-        });
-    }
-})
+program.version(pkg.version);
+program.command('update').description('update hosts').action(function() {
+    update();
+});
+program.parse(process.argv);
