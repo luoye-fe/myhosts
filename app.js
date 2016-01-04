@@ -3,13 +3,14 @@
 var fs = require('fs');
 var path = require('path');
 var os = require('os');
+var exec = require('child_process').exec;
 
 var pkg = require('./package.json');
 var pwd = process.cwd();
 var LOCALPATH = process.env.HOME || process.env.USERPROFILE;
 var HOSTS = os.platform() == 'win32' ? 'C:/Windows/System32/drivers/etc/hosts' : '/etc/hosts';
 var EOL = os.EOL;
-
+var isWin = (/^win/).test(os.platform()) ? true: false;
 
 var program = require('commander');
 var request = require('request');
@@ -39,6 +40,8 @@ var update = function(){
                 if (err) {
                     console.log(err);
                 }
+                // 更新dns
+                isWin ? exec('ipconfig /flushdns') : exec('sudo killall -HUP mDNSResponder');
                 console.log('更新成功！');
             });
         }
