@@ -48,8 +48,16 @@ var update = function(){
     })
 }
 
+
+var remove = function(){
+    hosts.removeGroup('vpn');
+}
+
 program.version(pkg.version);
 program.command('update').description('update hosts').action(function() {
     update();
+});
+program.command('remove').description('remove vpn hosts').action(function() {
+    remove();
 });
 program.parse(process.argv);
