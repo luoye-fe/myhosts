@@ -6,6 +6,10 @@
 
 安装 `npm install myhost -g`
 
-使用 `myhost update`
+使用 `myhost update` 更新hosts
 
-然后快乐的上网吧(不会更改hosts文件原有内容)
+使用 `myhost remove` 移除hosts
+
+> 请使用管理员身份运行以上命令
+> mac `sudo`
+> win `管理员身份打开命令行`
